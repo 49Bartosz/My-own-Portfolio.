@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bartosz Zalesny</title>
+  <meta name="description" content="Bartosz Zalesny: student in Den Haag, learning to build websites that help people.">
+
+  <!-- Clean sans for small text. The big "matcha cream" font gets added in the CSS step. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <a href="#top" class="nav__logo">bz</a>
+    <nav class="nav__links" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#story">Story</a>
+      <a href="#projects">Projects</a>
+      <a href="#interests">Interests</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="hero__eyebrow reveal">Hey, I'm</p>
+      <h1 class="hero__title reveal">Bartosz<br>Zalesny</h1>
+      <p class="hero__sub reveal">Student at Vatel. Learning to build websites that help people.</p>
+      <p class="hero__place reveal">Den Haag, The Netherlands</p>
+      <a href="#about" class="hero__scroll reveal" aria-label="Scroll to about section">scroll</a>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2 class="section__title reveal">About me</h2>
+      <div class="about__grid">
+        <p class="reveal">
+          I'm Bartosz, a student at François Vatel in Den Haag. I was born and raised in Bytom, Poland,
+          and now I live in the Netherlands. This page is part CV, part personal blog, a place where
+          you can get to know who I actually am.
+        </p>
+        <p class="reveal">
+          I like being useful to the people around me. That's what pulled me towards coding in the
+          first place: a website can make someone's day easier or even make them smile.
+        </p>
+      </div>
+
+      <ul class="traits">
+        <li class="reveal">Helpful</li>
+        <li class="reveal">Kind</li>
+        <li class="reveal">Hard working</li>
+      </ul>
+    </section>
+
+    <!-- STORY -->
+    <section id="story" class="section">
+      <h2 class="section__title reveal">My story</h2>
+
+      <div class="timeline">
+        <article class="timeline__item reveal">
+          <span class="timeline__tag">Bytom, Poland</span>
+          <h3>Where I'm from</h3>
+          <p>I grew up in Bytom, in the south of Poland. It's where I come from and it's still part of who I am.</p>
+        </article>
+
+        <article class="timeline__item reveal">
+          <span class="timeline__tag">Coding</span>
+          <h3>How I found code</h3>
+          <p>
+            It started on TikTok. I kept seeing people make beautiful websites and I wanted to be able to do the same.
+            I love how something you build can help people.
+          </p>
+        </article>
+
+        <article class="timeline__item reveal">
+          <span class="timeline__tag">January 2025</span>
+          <h3>Reverting to Islam</h3>
+          <p>
+            In January 2025 I became Muslim, and I'm still learning every day. My faith shapes how I live
+            and how I treat people.
+          </p>
+        </article>
+
+        <article class="timeline__item reveal">
+          <span class="timeline__tag">Now</span>
+          <h3>Den Haag &amp; Vatel</h3>
+          <p>
+            I study at François Vatel in Den Haag, build things on the side, and I'm working on getting better
+            at giving people sincere compliments.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <h2 class="section__title reveal">Projects</h2>
+
+      <article class="project reveal">
+        <div class="project__info">
+          <h3>Happy 17th Birthday, Kassandra!</h3>
+          <p>
+            A small birthday website I made as a gift. My goal was to make someone feel appreciated
+            through something I built myself.
+          </p>
+          <ul class="project__tags">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+          </ul>
+        </div>
+        <a class="btn" href="https://49bartosz.github.io/Kassandra-17/" target="_blank" rel="noopener">View project</a>
+      </article>
+
+      <p class="projects__more reveal">More coming soon. I'm always building something new.</p>
+    </section>
+
+    <!-- INTERESTS -->
+    <section id="interests" class="section">
+      <h2 class="section__title reveal">What I'm into</h2>
+
+      <div class="cards">
+        <article class="card reveal">
+          <h3>Basketball</h3>
+          <p>Playing is my favourite way to switch off and stay active.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Football</h3>
+          <p>I love watching the game, especially with friends.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Gaming</h3>
+          <p>Good for unwinding, and even better when it's with friends.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Dancing</h3>
+          <p>My latest obsession. I'm still learning, and I'm enjoying every step.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Learning Islam</h3>
+          <p>Studying my religion and growing in it day by day.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section contact">
+      <h2 class="section__title reveal">Say hi</h2>
+      <p class="contact__text reveal">The easiest way to reach me is through social media. Send me a message.</p>
+
+      <div class="contact__links reveal">
+        <a class="btn" href="https://www.instagram.com/bzdenhaag" target="_blank" rel="noopener">Instagram · bzdenhaag</a>
+        <a class="btn btn--alt" href="https://www.tiktok.com/@bz..denhaag" target="_blank" rel="noopener">TikTok · bz..denhaag</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year">2026</span> Bartosz Zalesny · Den Haag</p>
+  </footer>
+
+</body>
+</html>
