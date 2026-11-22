@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bartosz Zalesny</title>
+  <meta name="description" content="Bartosz Zalesny: student in Den Haag, learning to build websites that help people.">
+
+  <!-- Sets the saved (or system) theme before the page paints, so there's no flash -->
+  <script>
+    try {
+      var t = localStorage.getItem("theme") ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght,SOFT@9..144,400..700,100&display=swap" rel="stylesheet">
+
+  <style>
+/* =========================================================
+   Bartosz Zalesny, portfolio
+   Light: cream + soft green + dusty pink.
+   Dark: deep forest + warm moonlight.
+   ========================================================= */
+
+/* ---------- Design tokens ---------- */
+:root {
+  color-scheme: light;
+  --cream: #fbf6ea;
+  --cream-deep: #f3ead5;
+  --sand: #e9dcc0;
+  --sage-light: #dde7cf;
+  --sage: #a9bf95;
+  --sage-deep: #6f8a64;
+  --pink: #e3bdb7;
+  --pink-deep: #c98f8a;
+  --pink-soft: rgba(227, 189, 183, 0.45);
+  --ink: #3b4237;
+  --ink-soft: #6a7263;
+
+  --card: #fff9ee;
+  --project-mid: #f6efe0;
+  --tag-bg: rgba(255, 255, 255, 0.7);
+  --nav-bg: rgba(251, 246, 234, 0.82);
+  --nav-line: rgba(169, 191, 149, 0.3);
+  --nav-shadow: 0 6px 24px rgba(111, 138, 100, 0.16);
+
+  --btn-bg: #6f8a64;
+  --btn-hover: #5f7a55;
+  --btn-text: #fff;
+  --alt-bg: #c98f8a;
+  --alt-hover: #b87d78;
+
+  --shadow: 0 10px 30px rgba(111, 138, 100, 0.14);
+  --shadow-lg: 0 16px 40px rgba(111, 138, 100, 0.22);
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius: 22px;
+  --radius-sm: 14px;
+  --max: 1060px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --cream: #182019;
+  --cream-deep: #1f2a20;
+  --sand: #32402f;
+  --sage-light: #263625;
+  --sage: #4f6b49;
+  --sage-deep: #a9cf9c;
+  --pink: #7d4f4c;
+  --pink-deep: #e0a49d;
+  --pink-soft: rgba(224, 164, 157, 0.16);
+  --ink: #efe9d8;
+  --ink-soft: #a8b1a0;
+
+  --card: #232e23;
+  --project-mid: #202b21;
+  --tag-bg: rgba(255, 255, 255, 0.08);
+  --nav-bg: rgba(24, 32, 25, 0.82);
+  --nav-line: rgba(169, 207, 156, 0.18);
+  --nav-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+
+  --btn-bg: #a9cf9c;
+  --btn-hover: #bfe0b3;
+  --btn-text: #162016;
+  --alt-bg: #e0a49d;
+  --alt-hover: #ecb8b2;
+
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Smooth colour change when the theme button is pressed */
+.theme-anim,
+.theme-anim *,
+.theme-anim *::before,
+.theme-anim *::after {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+html.is-loading { overflow: hidden; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100;
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--ink);
+}
+
+p { margin: 0; }
+ul { list-style: none; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 3px solid var(--sage-deep);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- Page loader ---------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  background:
+    radial-gradient(60% 50% at 80% 15%, var(--sage-light) 0%, transparent 70%),
+    radial-gradient(50% 45% at 15% 85%, var(--pink-soft) 0%, transparent 70%),
+    var(--cream);
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+  /* Safety net: if the script ever fails, the loader still goes away */
+  animation: loader-fallback 0.6s ease 4.5s forwards;
+}
+
+.loader.is-hidden { opacity: 0; visibility: hidden; }
+
+@keyframes loader-fallback { to { opacity: 0; visibility: hidden; } }
+
+.loader__inner { max-width: 640px; }
+
+.loader__logo {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100;
+  font-weight: 700;
+  font-size: clamp(6rem, 28vw, 13rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--sage-deep);
+  animation: loader-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.loader__quote {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100;
+  font-size: clamp(1.15rem, 3.4vw, 1.6rem);
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--ink);
+  animation: loader-fade 0.9s ease 0.5s both;
+}
+
+.loader__author {
+  margin-top: 10px;
+  font-weight: 500;
+  color: var(--pink-deep);
+  animation: loader-fade 0.9s ease 0.9s both;
+}
+
+@keyframes loader-rise {
+  from { opacity: 0; transform: translateY(40px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes loader-fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- Custom cursor (mouse devices only) ---------- */
+.cursor { display: none; }
+
+.has-cursor,
+.has-cursor a,
+.has-cursor button { cursor: none; }
+
+.has-cursor .cursor {
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3000;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease, width 0.25s ease, height 0.25s ease,
+              margin 0.25s ease, background-color 0.25s ease, border-color 0.25s ease,
+              box-shadow 0.3s ease;
+}
+
+.has-cursor.cursor-on .cursor { opacity: 1; }
+
+/* Light mode: a sage dot inside a soft pink ring */
+.cursor--dot {
+  width: 10px; height: 10px;
+  margin: -5px 0 0 -5px;
+  background: var(--sage-deep);
+}
+
+.cursor--ring {
+  width: 38px; height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 2px solid var(--pink-deep);
+}
+
+/* Dark mode: a glowing moonlight dot inside a dashed, glowing ring */
+[data-theme="dark"] .cursor--dot {
+  background: #ffe9a8;
+  box-shadow: 0 0 12px 3px rgba(255, 233, 168, 0.65);
+}
+
+[data-theme="dark"] .cursor--ring {
+  border: 1.5px dashed rgba(255, 233, 168, 0.75);
+  box-shadow: 0 0 18px rgba(255, 233, 168, 0.25);
+}
+
+/* Over links and buttons the ring grows, the dot shrinks */
+.cursor-hover .cursor--ring {
+  width: 60px; height: 60px;
+  margin: -30px 0 0 -30px;
+  background: var(--pink-soft);
+}
+
+.cursor-hover .cursor--dot {
+  width: 6px; height: 6px;
+  margin: -3px 0 0 -3px;
+}
+
+.cursor-down .cursor--ring {
+  width: 28px; height: 28px;
+  margin: -14px 0 0 -14px;
+}
+
+/* ---------- Scroll reveal ---------- */
+.js-ready .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--delay, 0s);
+}
+
+.js-ready .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js-ready .reveal { opacity: 1; transform: none; transition: none; }
+  .loader__logo, .loader__quote, .loader__author { animation: none; }
+  .flip__inner { transition: none !important; }
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px clamp(18px, 4vw, 44px);
+  background: var(--nav-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--nav-line);
+  transition: box-shadow 0.3s ease;
+}
+
+.nav--scrolled { box-shadow: var(--nav-shadow); }
+
+.nav__logo {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--sage-deep);
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 30px);
+}
+
+.nav__links {
+  display: flex;
+  gap: clamp(14px, 2.4vw, 30px);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.nav__links a {
+  position: relative;
+  color: var(--ink-soft);
+  transition: color 0.25s;
+}
+
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -4px;
+  width: 100%; height: 2px;
+  background: var(--pink);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.nav__links a:hover { color: var(--ink); }
+.nav__links a:hover::after { transform: scaleX(1); }
+
+/* Theme toggle */
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--ink);
+  background: var(--sage-light);
+  border: 2px solid var(--sage);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.theme-toggle:hover { transform: rotate(18deg) scale(1.08); }
+
+.theme-toggle__moon { display: none; }
+[data-theme="dark"] .theme-toggle__sun { display: none; }
+[data-theme="dark"] .theme-toggle__moon { display: block; }
+
+/* ---------- Layout ---------- */
+.section {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(70px, 11vw, 120px) clamp(20px, 5vw, 40px);
+}
+
+.section__title {
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  margin-bottom: clamp(28px, 5vw, 48px);
+}
+
+.section__title::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 6px;
+  margin-top: 14px;
+  background: linear-gradient(90deg, var(--sage), var(--pink));
+  border-radius: 6px;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px clamp(20px, 7vw, 100px) 140px;
+  background:
+    radial-gradient(60% 50% at 85% 20%, var(--sage-light) 0%, transparent 70%),
+    radial-gradient(50% 45% at 10% 85%, var(--pink-soft) 0%, transparent 70%),
+    var(--cream);
+  overflow: hidden;
+}
+
+/* soft wave at the bottom; the SVG is a mask so the colour follows the theme */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -1px;
+  width: 100%; height: 90px;
+  background: var(--cream-deep);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0,64 C240,120 480,0 720,48 C960,96 1200,16 1440,64 L1440,120 L0,120 Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0,64 C240,120 480,0 720,48 C960,96 1200,16 1440,64 L1440,120 L0,120 Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.hero__eyebrow {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--sage-deep);
+  margin-bottom: 8px;
+}
+
+.hero__title {
+  font-size: clamp(3.4rem, 13vw, 9rem);
+  letter-spacing: -0.02em;
+}
+
+.hero__sub {
+  max-width: 34ch;
+  margin-top: 26px;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  color: var(--ink-soft);
+}
+
+.hero__place {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 22px;
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--pink-soft);
+  border-radius: 999px;
+}
+
+.hero__scroll {
+  position: absolute;
+  left: clamp(20px, 7vw, 100px);
+  bottom: 110px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.hero__scroll::after {
+  content: "";
+  width: 44px; height: 2px;
+  background: var(--sage-deep);
+  border-radius: 2px;
+}
+
+/* ---------- Sections with alternate backgrounds ---------- */
+#about { background: var(--cream-deep); max-width: none; }
+#about > * { max-width: calc(var(--max) - 80px); margin-inline: auto; }
+
+/* ---------- About ---------- */
+.about__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 4vw, 48px);
+  font-size: 1.12rem;
+}
+
+.traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 40px !important;
+}
+
+.traits li {
+  padding: 10px 24px;
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100;
+  font-size: 1.25rem;
+  font-weight: 500;
+  border-radius: 999px;
+  background: var(--sage-light);
+  border: 2px solid var(--sage);
+}
+
+.traits li:nth-child(2) { background: var(--pink-soft); border-color: var(--pink); }
+.traits li:nth-child(3) { background: var(--cream); border-color: var(--sand); }
+
+/* ---------- Timeline ---------- */
+.timeline {
+  position: relative;
+  display: grid;
+  gap: 28px;
+  padding-left: 34px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px; top: 8px; bottom: 8px;
+  width: 3px;
+  background: linear-gradient(var(--sage), var(--pink));
+  border-radius: 3px;
+}
+
+.timeline__item {
+  position: relative;
+  padding: 26px 28px;
+  background: var(--card);
+  border: 1px solid var(--sand);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: -34px; top: 34px;
+  width: 17px; height: 17px;
+  background: var(--cream);
+  border: 4px solid var(--sage-deep);
+  border-radius: 50%;
+}
+
+.timeline__tag {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--sage-deep);
+  background: var(--sage-light);
+  border-radius: 999px;
+}
+
+.timeline__item h3 { font-size: 1.5rem; margin-bottom: 8px; }
+.timeline__item p { color: var(--ink-soft); }
+
+/* ---------- Projects ---------- */
+.project {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: clamp(24px, 4vw, 40px);
+  background: linear-gradient(135deg, var(--sage-light), var(--project-mid) 60%, var(--pink-soft));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.project + .project { margin-top: 24px; }
+
+.project:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.project__info h3 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin-bottom: 10px; }
+.project__info p { max-width: 52ch; color: var(--ink-soft); }
+
+.project__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.project__tags li {
+  padding: 4px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: var(--tag-bg);
+  border-radius: 999px;
+}
+
+.projects__more {
+  margin-top: 26px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 13px 28px;
+  font-weight: 700;
+  font-size: 0.98rem;
+  white-space: nowrap;
+  color: var(--btn-text);
+  background: var(--btn-bg);
+  border-radius: 999px;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn:hover {
+  background: var(--btn-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.btn--alt { background: var(--alt-bg); }
+.btn--alt:hover { background: var(--alt-hover); }
+
+/* ---------- Interest cards ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+}
+
+.card {
+  padding: 28px 24px;
+  background: var(--card);
+  border: 1px solid var(--sand);
+  border-radius: var(--radius);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--sage);
+  box-shadow: var(--shadow);
+}
+
+.card h3 { font-size: 1.5rem; margin-bottom: 8px; }
+.card p { color: var(--ink-soft); font-size: 0.98rem; }
+
+.card:nth-child(3n+1) { background: var(--sage-light); border-color: transparent; }
+.card:nth-child(3n+2) { background: var(--card); }
+.card:nth-child(3n)   { background: var(--pink-soft); border-color: transparent; }
+
+/* ---------- Fun facts (flip cards) ---------- */
+.facts__hint {
+  margin: -24px 0 28px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 22px;
+}
+
+.flip {
+  width: 100%;
+  height: 200px;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flip__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.flip.is-flipped .flip__inner { transform: rotateY(180deg); }
+
+.flip__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 26px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--sand);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+.flip__title {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100;
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.flip__front { background: var(--card); box-shadow: var(--shadow); }
+.flip:nth-child(3n+1) .flip__front { background: var(--sage-light); border-color: transparent; }
+.flip:nth-child(3n)   .flip__front { background: var(--pink-soft); border-color: transparent; }
+
+.flip__back {
+  align-items: center;
+  transform: rotateY(180deg);
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--btn-text);
+  background: var(--btn-bg);
+  border-color: transparent;
+}
+
+/* ---------- Contact ---------- */
+.contact {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.contact .section__title::after { margin-inline: auto; }
+
+.contact__text {
+  max-width: 44ch;
+  margin: 0 auto 32px;
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+}
+
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  padding: 36px 20px 44px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  background: var(--cream-deep);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px) {
+  .about__grid { grid-template-columns: 1fr; }
+
+  .project { flex-direction: column; align-items: flex-start; }
+
+  .nav__right { gap: 12px; }
+  .nav__links { gap: 12px; font-size: 0.85rem; }
+  .nav__links a:nth-child(2) { display: none; } /* hide "Story" link on small screens */
+
+  .hero__scroll { bottom: 100px; }
+}
+
+@media (max-width: 440px) {
+  .nav__links a:nth-child(4) { display: none; } /* hide "Interests" on tiny screens */
+  .timeline { padding-left: 26px; }
+  .timeline__item::before { left: -26px; }
+}
+
+  </style>
+
+</head>
+<body>
+
+  <!-- PAGE LOADER: edit the quote here -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <div class="loader__logo">BZ</div>
+      <p class="loader__quote">“Kindness costs nothing, but it can change someone’s whole day.”</p>
+      <p class="loader__author">- Me</p>
+    </div>
+  </div>
+
+  <!-- CUSTOM CURSOR (only shows on devices with a mouse) -->
+  <div class="cursor cursor--ring" aria-hidden="true"></div>
+  <div class="cursor cursor--dot" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <a href="#top" class="nav__logo">bz</a>
+    <div class="nav__right">
+      <nav class="nav__links" aria-label="Main">
+        <a href="#about">About</a>
+        <a href="#story">Story</a>
+        <a href="#projects">Projects</a>
+        <a href="#interests">Interests</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between light and dark mode">
+        <span class="theme-toggle__sun" aria-hidden="true">☀</span>
+        <span class="theme-toggle__moon" aria-hidden="true">☾</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="hero__eyebrow reveal">Hey, I'm</p>
+      <h1 class="hero__title reveal">Bartosz<br>Zalesny</h1>
+      <p class="hero__sub reveal">Student at Vatel. Learning to build websites that help people.</p>
+      <p class="hero__place reveal">Den Haag, The Netherlands</p>
+      <a href="#about" class="hero__scroll reveal" aria-label="Scroll to about section">scroll</a>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2 class="section__title reveal">About me</h2>
+      <div class="about__grid">
+        <p class="reveal">
+          I'm Bartosz, a student at François Vatel in Den Haag. I was born and raised in Bytom, Poland,
+          and now I live in the Netherlands. This page is part CV, part personal blog, a place where
+          you can get to know who I actually am.
+        </p>
+        <p class="reveal">
+          I like being useful to the people around me. That's what pulled me towards coding in the
+          first place: a website can make someone's day easier or even make them smile.
+        </p>
+      </div>
+
+      <ul class="traits">
+        <li class="reveal">Helpful</li>
+        <li class="reveal">Kind</li>
+        <li class="reveal">Hard working</li>
+      </ul>
+    </section>
+
+    <!-- STORY -->
+    <section id="story" class="section">
+      <h2 class="section__title reveal">My story</h2>
+
+      <div class="timeline">
+        <article class="timeline__item reveal">
+          <span class="timeline__tag">Bytom, Poland</span>
+          <h3>Where I'm from</h3>
+          <p>I grew up in Bytom, in the south of Poland. It's where I come from and it's still part of who I am.</p>
+        </article>
+
+        <article class="timeline__item reveal">
+          <span class="timeline__tag">Coding</span>
+          <h3>How I found code</h3>
+          <p>
+            It started on TikTok. I kept seeing people make beautiful websites and I wanted to be able to do the same.
+            I love how something you build can help people.
+          </p>
+        </article>
+
+        <article class="timeline__item reveal">
+          <span class="timeline__tag">January 2025</span>
+          <h3>Reverting to Islam</h3>
+          <p>
+            In January 2025 I became Muslim, and I'm still learning every day. My faith shapes how I live
+            and how I treat people.
+          </p>
+        </article>
+
+        <article class="timeline__item reveal">
+          <span class="timeline__tag">Now</span>
+          <h3>Den Haag &amp; Vatel</h3>
+          <p>
+            I study at François Vatel in Den Haag, build things on the side, and I'm working on getting better
+            at giving people sincere compliments.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <h2 class="section__title reveal">Projects</h2>
+
+      <article class="project reveal">
+        <div class="project__info">
+          <h3>Happy 17th Birthday, Kassandra!</h3>
+          <p>
+            A small birthday website I made as a gift. My goal was to make someone feel appreciated
+            through something I built myself.
+          </p>
+          <ul class="project__tags">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+          </ul>
+        </div>
+        <a class="btn" href="https://49bartosz.github.io/Kassandra-17/" target="_blank" rel="noopener">View project</a>
+      </article>
+
+      <article class="project reveal">
+        <div class="project__info">
+          <h3>DJ DÆN: Booking Website</h3>
+          <p>
+            A website I built for my friend Daniel, a house, tech house and techno DJ. People can
+            hear his sets, see the prices, get a live estimate and send a booking request.
+          </p>
+          <ul class="project__tags">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+          </ul>
+        </div>
+        <a class="btn" href="https://49bartosz.github.io/DAEN-Version-1/#book" target="_blank" rel="noopener">View project</a>
+      </article>
+
+      <article class="project reveal">
+        <div class="project__info">
+          <h3>KASS STUDIO: Photography in Den Haag</h3>
+          <p>
+            A portfolio website I made for my good friend Kassandra, a photographer based in Den Haag.
+            I wanted her work to have a clean place to shine and be easy to find.
+          </p>
+          <ul class="project__tags">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+          </ul>
+        </div>
+        <a class="btn" href="https://49bartosz.github.io/Kassandra---090/" target="_blank" rel="noopener">View project</a>
+      </article>
+
+      <p class="projects__more reveal">More coming soon. I'm always building something new.</p>
+    </section>
+
+    <!-- INTERESTS -->
+    <section id="interests" class="section">
+      <h2 class="section__title reveal">What I'm into</h2>
+
+      <div class="cards">
+        <article class="card reveal">
+          <h3>Basketball</h3>
+          <p>Playing is my favourite way to switch off and stay active.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Football</h3>
+          <p>I love watching the game, especially with friends.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Gaming</h3>
+          <p>Good for unwinding, and even better when it's with friends.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Dancing</h3>
+          <p>My latest obsession. I'm still learning, and I'm enjoying every step.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Learning Islam</h3>
+          <p>Studying my religion and growing in it day by day.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- FUN FACTS: edit the text on each card (front = title, back = the fact) -->
+    <section id="facts" class="section">
+      <h2 class="section__title reveal">Fun facts</h2>
+      <p class="facts__hint reveal">Tap a card to flip it.</p>
+
+      <div class="facts">
+        <button class="flip reveal" type="button" aria-label="Fun fact: where I learned to code. Tap to flip.">
+          <span class="flip__inner">
+            <span class="flip__face flip__front"><span class="flip__title">My first coding teacher?</span></span>
+            <span class="flip__face flip__back"><span>TikTok. I watched way too many web design videos before I wrote a single line.</span></span>
+          </span>
+        </button>
+
+        <button class="flip reveal" type="button" aria-label="Fun fact: my hometown. Tap to flip.">
+          <span class="flip__inner">
+            <span class="flip__face flip__front"><span class="flip__title">Where was I born?</span></span>
+            <span class="flip__face flip__back"><span>Bytom, in the south of Poland. Still the best pierogi, no debate.</span></span>
+          </span>
+        </button>
+
+        <button class="flip reveal" type="button" aria-label="Fun fact: dancing. Tap to flip.">
+          <span class="flip__inner">
+            <span class="flip__face flip__front"><span class="flip__title">My newest obsession?</span></span>
+            <span class="flip__face flip__back"><span>Dancing. I'm not good yet, but I'm very committed.</span></span>
+          </span>
+        </button>
+
+        <button class="flip reveal" type="button" aria-label="Fun fact: basketball. Tap to flip.">
+          <span class="flip__inner">
+            <span class="flip__face flip__front"><span class="flip__title">One more game?</span></span>
+            <span class="flip__face flip__back"><span>It's never just one more game. Ask anyone who plays with me.</span></span>
+          </span>
+        </button>
+
+        <button class="flip reveal" type="button" aria-label="Fun fact: my first website. Tap to flip.">
+          <span class="flip__inner">
+            <span class="flip__face flip__front"><span class="flip__title">What did I build as a gift?</span></span>
+            <span class="flip__face flip__back"><span>A whole birthday website for a friend. Cards are nice, but code lasts longer.</span></span>
+          </span>
+        </button>
+
+        <button class="flip reveal" type="button" aria-label="Fun fact: compliments. Tap to flip.">
+          <span class="flip__inner">
+            <span class="flip__face flip__front"><span class="flip__title">What am I practising?</span></span>
+            <span class="flip__face flip__back"><span>Giving sincere compliments. I'm getting better, I promise.</span></span>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section contact">
+      <h2 class="section__title reveal">Say hi</h2>
+      <p class="contact__text reveal">The easiest way to reach me is through social media. Send me a message.</p>
+
+      <div class="contact__links reveal">
+        <a class="btn" href="https://www.instagram.com/bzdenhaag" target="_blank" rel="noopener">Instagram · bzdenhaag</a>
+        <a class="btn btn--alt" href="https://www.tiktok.com/@bz..denhaag" target="_blank" rel="noopener">TikTok · bz..denhaag</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year">2026</span> Bartosz Zalesny · Den Haag</p>
+  </footer>
+
+  <script>
+// =========================================================
+// Bartosz Zalesny, portfolio
+// Loader, dark mode, custom cursor, flip cards,
+// scroll reveal, nav shadow, footer year
+// =========================================================
+
+(function () {
+  const root = document.documentElement;
+
+  // ---------- 1. Dark mode ----------
+  // The saved theme is already applied by the tiny script in <head>.
+  const toggle = document.getElementById("theme-toggle");
+
+  const setTheme = (theme) => {
+    root.setAttribute("data-theme", theme);
+    try { localStorage.setItem("theme", theme); } catch (e) {}
+    if (toggle) toggle.setAttribute("aria-pressed", String(theme === "dark"));
+  };
+
+  if (toggle) {
+    toggle.setAttribute("aria-pressed", String(root.getAttribute("data-theme") === "dark"));
+    toggle.addEventListener("click", () => {
+      root.classList.add("theme-anim");
+      setTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+      setTimeout(() => root.classList.remove("theme-anim"), 500);
+    });
+  }
+
+  // ---------- 2. Custom cursor (mouse devices only) ----------
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const dot = document.querySelector(".cursor--dot");
+    const ring = document.querySelector(".cursor--ring");
+
+    if (dot && ring) {
+      root.classList.add("has-cursor");
+
+      let x = 0, y = 0, rx = 0, ry = 0;
+
+      window.addEventListener("mousemove", (e) => {
+        x = e.clientX;
+        y = e.clientY;
+        dot.style.transform = `translate(${x}px, ${y}px)`;
+        if (!root.classList.contains("cursor-on")) {
+          rx = x; ry = y; // first move: put the ring right under the dot
+          root.classList.add("cursor-on");
+        }
+      }, { passive: true });
+
+      // The ring trails behind the dot
+      const follow = () => {
+        rx += (x - rx) * 0.18;
+        ry += (y - ry) * 0.18;
+        ring.style.transform = `translate(${rx}px, ${ry}px)`;
+        requestAnimationFrame(follow);
+      };
+      follow();
+
+      const hoverTargets = "a, button, .flip";
+      document.addEventListener("mouseover", (e) => {
+        if (e.target.closest(hoverTargets)) root.classList.add("cursor-hover");
+      });
+      document.addEventListener("mouseout", (e) => {
+        if (e.target.closest(hoverTargets)) root.classList.remove("cursor-hover");
+      });
+
+      window.addEventListener("mousedown", () => root.classList.add("cursor-down"));
+      window.addEventListener("mouseup", () => root.classList.remove("cursor-down"));
+
+      // Hide the cursor when the mouse leaves the window
+      document.addEventListener("mouseleave", () => root.classList.remove("cursor-on"));
+      document.addEventListener("mouseenter", () => root.classList.add("cursor-on"));
+    }
+  }
+
+  // ---------- 3. Fun fact flip cards ----------
+  document.querySelectorAll(".flip").forEach((card) => {
+    card.addEventListener("click", () => card.classList.toggle("is-flipped"));
+  });
+
+  // ---------- 4. Scroll reveal ----------
+  const revealEls = document.querySelectorAll(".reveal");
+  let startReveal = () => {};
+
+  if (!("IntersectionObserver" in window)) {
+    // Very old browsers: just show everything.
+    revealEls.forEach((el) => el.classList.add("is-visible"));
+  } else {
+    // Stagger: items that sit side by side appear one after another.
+    const groups = [".traits", ".cards", ".facts", ".timeline", ".contact__links"];
+
+    groups.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((group) => {
+        group.querySelectorAll(".reveal").forEach((el, i) => {
+          el.style.setProperty("--delay", `${i * 0.12}s`);
+        });
+      });
+    });
+
+    document.querySelectorAll(".hero > .reveal").forEach((el, i) => {
+      el.style.setProperty("--delay", `${i * 0.15}s`);
+    });
+
+    // Turn on the hidden state (CSS only hides .reveal once this class exists).
+    root.classList.add("js-ready");
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            obs.unobserve(entry.target); // animate once, then stop watching
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    // Called once the loader is gone, so the hero animates in right after it
+    startReveal = () => revealEls.forEach((el) => observer.observe(el));
+  }
+
+  // ---------- 5. Page loader ----------
+  const loader = document.getElementById("loader");
+  const MIN_SHOW = 2200; // how long the loader stays at least (ms)
+
+  if (loader) {
+    root.classList.add("is-loading");
+
+    const minTime = new Promise((resolve) => setTimeout(resolve, MIN_SHOW));
+    const pageReady = new Promise((resolve) => {
+      if (document.readyState === "complete") resolve();
+      else window.addEventListener("load", resolve, { once: true });
+    });
+
+    Promise.all([minTime, pageReady]).then(() => {
+      loader.classList.add("is-hidden");
+      root.classList.remove("is-loading");
+      startReveal();
+      setTimeout(() => loader.remove(), 900);
+    });
+  } else {
+    startReveal();
+  }
+
+  // ---------- 6. Footer year ----------
+  const year = document.getElementById("year");
+  if (year) year.textContent = new Date().getFullYear();
+
+  // ---------- 7. Nav shadow on scroll ----------
+  const nav = document.querySelector(".nav");
+  const onScroll = () => {
+    if (nav) nav.classList.toggle("nav--scrolled", window.scrollY > 20);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+})();
+
+  </script>
+
+</body>
+</html>
